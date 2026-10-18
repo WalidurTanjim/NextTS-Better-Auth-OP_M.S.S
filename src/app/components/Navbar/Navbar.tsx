@@ -6,25 +6,32 @@ import {signOut, useSession} from "@/lib/auth-client";
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const { data } = useSession();
-    console.log(data);
+    const { data, isPending } = useSession();
+    // console.log(data);
 
     const nav_links = <>
-        <li><Link href={`/`}>Development</Link></li>
-        <li><Link href={`/`}>Features</Link></li>
+        <li><Link href={`/service`}>Service</Link></li>
+        <li><Link href={`/dashboard`}>Dashboard</Link></li>
+        {
+            data?.user && <li><Link href={`/profile`}>Profile</Link></li>
+        }
     </>
 
     const auth_links = <>
         {
-            data?.user ?
-            <>
-                <span>Welcome {data?.user?.name}</span>
-                <Button onClick={() => signOut()}>SignOut</Button>
-            </> :
-            <>
-                <Link href={`/sign-in`} className="block py-2">Login</Link>
-                <Link href={`/sign-up`} className="block py-2">Signup</Link>
-            </>
+            isPending ? (
+                <span className="text-gray-500">...</span>
+            ) : data?.user ? (
+                <>
+                    <span>Welcome {data?.user?.name}</span>
+                    <Button onClick={() => signOut()}>SignOut</Button>
+                </>
+            ) : (
+                <>
+                    <Link href={`/sign-in`} className="block py-2">Login</Link>
+                    <Link href={`/sign-up`} className="block py-2">Signup</Link>
+                </>
+            )
         }
     </>;
 
@@ -64,7 +71,7 @@ const Navbar = () => {
                     </button>
                     <div className="flex items-center gap-3">
                         {/*<Logo />*/}
-                        <p className="font-bold">ACME</p>
+                        <Link href={`/`} className="font-bold">ACME</Link>
                     </div>
                 </div>
                 <ul className="hidden items-center gap-4 md:flex">
