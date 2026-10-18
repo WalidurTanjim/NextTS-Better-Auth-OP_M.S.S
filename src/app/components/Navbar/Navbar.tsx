@@ -7,7 +7,7 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const { data, isPending } = useSession();
-    // console.log(data);
+    console.log("Session from navbar:", data);
 
     const nav_links = <>
         <li><Link href={`/service`}>Service</Link></li>
